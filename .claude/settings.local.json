@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"e:\\\\Projects\\\\Code\\\\Broadcast-Music-Log\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(ConvertTo-Csv -NoTypeInformation)",
+      "Bash(Out-String)",
+      "Bash(Get-Content \"e:\\\\Projects\\\\Code\\\\Broadcast-Music-Log\\\\requirements.txt\")"
+    ]
+  }
+}

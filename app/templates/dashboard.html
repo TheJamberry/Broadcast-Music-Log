@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Broadcast Music Logger</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f6f8; color: #1f2937; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+        header h1 { margin: 0 0 12px; }
+        .card { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08); padding: 20px; margin-bottom: 20px; }
+        .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { color: #111827; font-weight: 700; }
+        .subtitle { color: #4b5563; margin-top: 0; }
+        .small { font-size: 0.92rem; color: #6b7280; }
+        .count { font-size: 2rem; margin: 0; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="card">
+            <h1>Broadcast Music Logger</h1>
+            <p class="subtitle">Recent plays, match confidence, and streaming detection history.</p>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Latest detection</h2>
+                {% if recent_play %}
+                    <p><strong>{{ recent_play.song.artist }}</strong> — {{ recent_play.song.title }}</p>
+                    <p class="small">Station: {{ recent_play.station_name }}</p>
+                    <p class="small">Detected at: {{ recent_play.detected_at.strftime('%d %b %Y %H:%M') }} UTC</p>
+                    <p class="small">Confidence: {{ "%.2f"|format(recent_play.confidence) }}</p>
+                {% else %}
+                    <p>No detections yet.</p>
+                {% endif %}
+            </div>
+            <div class="card">
+                <h2>Plays today</h2>
+                <p class="count">{{ plays_today }}</p>
+            </div>
+            <div class="card">
+                <h2>Plays this week</h2>
+                <p class="count">{{ plays_week }}</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Most played songs</h2>
+            {% if song_stats %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Artist</th>
+                        <th>Title</th>
+                        <th>Album</th>
+                        <th>Plays</th>
+                        <th>Last played</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song, play_count, last_played in song_stats %}
+                        <tr>
+                            <td>{{ song.artist }}</td>
+                            <td>{{ song.title }}</td>
+                            <td>{{ song.album or "—" }}</td>
+                            <td>{{ play_count }}</td>
+                            <td>{{ last_played.strftime('%d %b %Y %H:%M') ~ ' UTC' if last_played else '—' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p>No songs logged yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>Raw detection history</h2>
+            {% if play_history %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time (UTC)</th>
+                        <th>Station</th>
+                        <th>Song</th>
+                        <th>Confidence</th>
+                        <th>Provider</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for play in play_history %}
+                        <tr>
+                            <td>{{ play.detected_at.strftime('%d %b %Y %H:%M') }}</td>
+                            <td>{{ play.station_name }}</td>
+                            <td>{{ play.song.artist }} — {{ play.song.title }}</td>
+                            <td>{{ "%.2f"|format(play.confidence) }}</td>
+                            <td>{{ play.provider }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p>No detection history yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

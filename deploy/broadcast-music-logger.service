@@ -1,0 +1,15 @@
+[Unit]
+Description=Broadcast Music Logger
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/broadcast-music-log
+EnvironmentFile=/opt/broadcast-music-log/.env
+ExecStart=/opt/broadcast-music-log/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

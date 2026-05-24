@@ -1,0 +1,33 @@
+# ============================================================
+# DO NOT use this timer alongside broadcast-music-logger.service
+# ============================================================
+#
+# The service already runs a continuous async monitor loop that
+# polls all enabled stations every POLL_INTERVAL_SECONDS (default 25s).
+# Activating this timer as well would relaunch the entire uvicorn
+# process on a 30-second cadence, killing any in-flight audio
+# captures and creating duplicate detections.
+#
+# This file is provided only as a reference for operators who
+# want to replace the built-in polling loop with an external
+# scheduler (e.g. running cli.py run-once via cron instead of
+# keeping the web server alive).  In that case, disable the
+# monitor loop in the service and enable this timer.
+#
+# For the standard deployment, use the service alone:
+#
+#   sudo systemctl enable --now broadcast-music-logger.service
+#
+# ============================================================
+
+[Unit]
+Description=Broadcast Music Logger — one-shot polling timer (non-standard deployment only)
+# Requires=broadcast-music-logger.service   # Uncomment only if using the timer model
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+Unit=broadcast-music-logger.service
+
+[Install]
+WantedBy=timers.target
