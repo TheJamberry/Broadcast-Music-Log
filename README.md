@@ -57,7 +57,7 @@ The loop repeats every 25 seconds (configurable).
 |---|---|---|
 | Python | 3.11+ | |
 | FFmpeg | any recent | `sudo apt install ffmpeg` |
-| Chromaprint (`fpcalc`) | ≥ 1.5 | `sudo apt install chromaprint-tools` |
+| Chromaprint (`fpcalc`) | ≥ 1.5 | `sudo apt install libchromaprint-tools` |
 | AcoustID API key | — | Free — see [Getting an API key](#getting-an-acoustid-api-key) |
 | Internet access | — | For the radio stream and AcoustID/MusicBrainz lookups |
 
