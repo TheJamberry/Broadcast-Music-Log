@@ -78,7 +78,7 @@ The loop repeats every 25 seconds (configurable).
 
 ```bash
 sudo apt update
-sudo apt install -y python3 python3-venv python3-pip ffmpeg chromaprint-tools sqlite3
+sudo apt install -y python3 python3-venv python3-pip ffmpeg libchromaprint-tools sqlite3
 ```
 
 ### 2 — Clone and set up Python environment
